@@ -67,7 +67,7 @@ uint32_t ulRingBuffPush(xRing_buff_t *xRringBuf, const uint8_t *pucData, uint32_
             prvMemoryCopy2RingBuff(xRringBuf, pucData, ulRet);
             xRringBuf->ulTailIndex += ulRet;
             if ( xRringBuf->ulEffectiveSize == 0U ) {
-                --xRringBuf->.;
+                --xRringBuf->ulTailIndex;
             }
             xRringBuf->ulTailIndex %= ringCACHE_SIZE;
             xRringBuf->ulEffectiveSize += ulRet;
