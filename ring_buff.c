@@ -39,9 +39,7 @@ static void prvMemorySetZero(xRing_buff_t *xRringBuf, uint32_t ulSize)
 void vRingBuffInit(xRing_buff_t *xRringBuf)
 {
     if ( xRringBuf != NULL ) {
-#ifdef ringGLOBAL_LOCK_FUN
         ringGLOBAL_LOCK_FUN();
-#endif
         uint32_t ulLoopTimes;
         uint8_t *pucPointer = (uint8_t *)xRringBuf;
 
@@ -49,9 +47,7 @@ void vRingBuffInit(xRing_buff_t *xRringBuf)
             pucPointer[ulLoopTimes] = 0U;
         }
         xRringBuf->ulRemainingSize = ringCACHE_SIZE;
-#ifdef ringGLOBAL_UNLOCK_FUN
         ringGLOBAL_UNLOCK_FUN();
-#endif
     }
 }
 
@@ -60,9 +56,7 @@ uint32_t ulRingBuffPush(xRing_buff_t *xRringBuf, const uint8_t *pucData, uint32_
     uint32_t ulRet = 0U;
 
     if ( ( xRringBuf != NULL ) && ( pucData != NULL ) && ( ulSize != 0U ) ) {
-#ifdef ringGLOBAL_LOCK_FUN
         ringGLOBAL_LOCK_FUN();
-#endif
         if ( xRringBuf->ulRemainingSize > 0U ) {
             if ( xRringBuf->ulRemainingSize < ulSize ) {
                 ulRet = xRringBuf->ulRemainingSize;
@@ -79,9 +73,7 @@ uint32_t ulRingBuffPush(xRing_buff_t *xRringBuf, const uint8_t *pucData, uint32_
             xRringBuf->ulEffectiveSize += ulRet;
             xRringBuf->ulRemainingSize -= ulRet;
         }
-#ifdef ringGLOBAL_UNLOCK_FUN
         ringGLOBAL_UNLOCK_FUN();
-#endif
     }
     return ulRet;
 }
@@ -91,9 +83,7 @@ uint32_t ulRingBuffPop(xRing_buff_t *xRringBuf, uint32_t ulSize)
     uint32_t ulRet = 0U;
 
     if ( ( xRringBuf != NULL ) && ( ulSize != 0U ) ) {
-#ifdef ringGLOBAL_LOCK_FUN
         ringGLOBAL_LOCK_FUN();
-#endif
         if ( xRringBuf->ulEffectiveSize > 0U ) {
             if ( xRringBuf->ulEffectiveSize < ulSize ) {
                 ulRet = xRringBuf->ulEffectiveSize;
@@ -110,9 +100,7 @@ uint32_t ulRingBuffPop(xRing_buff_t *xRringBuf, uint32_t ulSize)
             }
             xRringBuf->ulHeadIndex %= ringCACHE_SIZE;
         }
-#ifdef ringGLOBAL_UNLOCK_FUN
         ringGLOBAL_UNLOCK_FUN();
-#endif
     }
     return ulRet;
 }
@@ -122,9 +110,7 @@ uint32_t ulRingBuffRead(xRing_buff_t *xRringBuf, uint8_t *pucBuff, uint32_t ulSi
     uint32_t ulRet = 0U;
 
     if ( ( xRringBuf != NULL ) && ( pucBuff != NULL ) && ( ulSize != 0U ) ) {
-#ifdef ringGLOBAL_LOCK_FUN
         ringGLOBAL_LOCK_FUN();
-#endif
         if ( xRringBuf->ulEffectiveSize > 0U ) {
             if ( xRringBuf->ulEffectiveSize < ulSize ) {
                 ulRet = xRringBuf->ulEffectiveSize;
@@ -134,9 +120,7 @@ uint32_t ulRingBuffRead(xRing_buff_t *xRringBuf, uint8_t *pucBuff, uint32_t ulSi
             }
             prvMemoryCopyFromRingBuff(xRringBuf, pucBuff, ulRet);
         }
-#ifdef ringGLOBAL_UNLOCK_FUN
         ringGLOBAL_UNLOCK_FUN();
-#endif
     }
     return ulRet;
 }
@@ -146,9 +130,7 @@ uint32_t ulRingBuffReadAndPop(xRing_buff_t *xRringBuf, uint8_t *pucBuff, uint32_
     uint32_t ulRet = 0U;
 
     if ( ( xRringBuf != NULL ) && ( pucBuff != NULL ) && ( ulSize != 0U ) ) {
-#ifdef ringGLOBAL_LOCK_FUN
         ringGLOBAL_LOCK_FUN();
-#endif
         if ( xRringBuf->ulEffectiveSize > 0U ) {
             if ( xRringBuf->ulEffectiveSize < ulSize ) {
                 ulRet = xRringBuf->ulEffectiveSize;
@@ -166,9 +148,7 @@ uint32_t ulRingBuffReadAndPop(xRing_buff_t *xRringBuf, uint8_t *pucBuff, uint32_
             }
             xRringBuf->ulHeadIndex %= ringCACHE_SIZE;
         }
-#ifdef ringGLOBAL_UNLOCK_FUN
         ringGLOBAL_UNLOCK_FUN();
-#endif
     }
     return ulRet;
 }
@@ -178,13 +158,9 @@ uint32_t ulRingBuffGetEffectiveSize(xRing_buff_t *xRringBuf)
     uint32_t ulRet = 0U;
 
     if ( xRringBuf != NULL ) {
-#ifdef ringGLOBAL_LOCK_FUN
         ringGLOBAL_LOCK_FUN();
-#endif
         ulRet = xRringBuf->ulEffectiveSize;
-#ifdef ringGLOBAL_UNLOCK_FUN
         ringGLOBAL_UNLOCK_FUN();
-#endif
     }
     return ulRet;
 }
@@ -194,13 +170,9 @@ uint32_t ulRingBuffGetRemainingSize(xRing_buff_t *xRringBuf)
     uint32_t ulRet = 0U;
 
     if ( xRringBuf != NULL ) {
-#ifdef ringGLOBAL_LOCK_FUN
         ringGLOBAL_LOCK_FUN();
-#endif
         ulRet = xRringBuf->ulRemainingSize;
-#ifdef ringGLOBAL_UNLOCK_FUN
         ringGLOBAL_UNLOCK_FUN();
-#endif
     }
     return ulRet;
 }
@@ -210,13 +182,9 @@ uint32_t ulRingBuffGetTotalCapacity(xRing_buff_t *xRringBuf)
     uint32_t ulRet = 0U;
 
     if ( xRringBuf != NULL ) {
-#ifdef ringGLOBAL_LOCK_FUN
         ringGLOBAL_LOCK_FUN();
-#endif
         ulRet = xRringBuf->ulRemainingSize + xRringBuf->ulEffectiveSize;
-#ifdef ringGLOBAL_UNLOCK_FUN
         ringGLOBAL_UNLOCK_FUN();
-#endif
         if ( ulRet != ringCACHE_SIZE ) {
             ulRet = 0;
         }

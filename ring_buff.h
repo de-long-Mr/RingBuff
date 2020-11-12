@@ -2,14 +2,27 @@
 #define RING_BUFF_H
 
 #include "stdint.h"
+#include "ring_buff_config.h"
 
 
 #define ringMEMORY_BASIC_UNIT_512B (512u)
 #define ringMEMORY_BASIC_UNIT_1K (1024u)
-#define ringCACHE_SIZE (ringMEMORY_BASIC_UNIT_512B)
 
-// #define ringGLOBAL_LOCK_FUN 
-// #define ringGLOBAL_UNLOCK_FUN 
+#ifdef ringBUFF_SIZE
+    #define ringCACHE_SIZE (ringBUFF_SIZE)
+#else 
+    #define ringCACHE_SIZE (ringMEMORY_BASIC_UNIT_512B)
+#endif
+
+#if (ringUSER_GLOBAL_LOCK == 1U)
+    // #define ringGLOBAL_LOCK_FUN 
+    // #define ringGLOBAL_UNLOCK_FUN
+    extern void ringGLOBAL_LOCK_FUN(void);
+    extern void ringGLOBAL_UNLOCK_FUN(void);
+#else 
+    #define ringGLOBAL_LOCK_FUN()
+    #define ringGLOBAL_UNLOCK_FUN()
+#endif
 
 #ifndef NULL
     #define NULL ((void *)(0U))
