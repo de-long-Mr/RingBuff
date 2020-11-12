@@ -8,8 +8,8 @@
 #define ringMEMORY_BASIC_UNIT_1K (1024u)
 #define ringCACHE_SIZE (ringMEMORY_BASIC_UNIT_512B)
 
-#define ringGLOBAL_LOCK_FUN 
-#define ringGLOBAL_UNLOCK_FUN 
+// #define ringGLOBAL_LOCK_FUN 
+// #define ringGLOBAL_UNLOCK_FUN 
 
 #ifndef NULL
     #define NULL ((void *)(0U))
