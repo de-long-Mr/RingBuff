@@ -36,6 +36,15 @@ typedef struct {
     uint32_t ulTailIndex;
 }xRing_buff_t;
 
+typedef struct {
+    uint32_t ulEffectiveSize;
+    uint32_t ulRemainingSize;
+    uint32_t ulTotalSize;
+    uint32_t ulHeadIndex;
+    uint32_t ulTailIndex;
+    uint8_t  *pucHeadPoint;
+}Ring_buff_info_t;
+
 void vRingBuffInit(xRing_buff_t *xRringBuf);
 uint32_t ulRingBuffPush(xRing_buff_t *xRringBuf, const uint8_t *pucData, uint32_t ulSize);
 uint32_t ulRingBuffPop(xRing_buff_t *xRringBuf, uint32_t ulSize);
@@ -44,5 +53,10 @@ uint32_t ulRingBuffReadAndPop(xRing_buff_t *xRringBuf, uint8_t *pucBuff, uint32_
 uint32_t ulRingBuffGetEffectiveSize(xRing_buff_t *xRringBuf);
 uint32_t ulRingBuffGetRemainingSize(xRing_buff_t *xRringBuf);
 uint32_t ulRingBuffGetTotalCapacity(xRing_buff_t *xRringBuf);
+int32_t ulRingBuffGetHeadIndex(xRing_buff_t *xRringBuf);
+int32_t ulRingBuffGetTailIndex(xRing_buff_t *xRringBuf);
+uint8_t *pucRingBuffGetHeadPoint(xRing_buff_t *xRringBuf);
+uint8_t *pucRingBuffGetTailPoint(xRing_buff_t *xRringBuf);
+void vRingBuffGetInfo(Ring_buff_info_t *xRringBufInfo, xRing_buff_t *xRringBuf);
 
 #endif

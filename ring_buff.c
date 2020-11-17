@@ -192,4 +192,79 @@ uint32_t ulRingBuffGetTotalCapacity(xRing_buff_t *xRringBuf)
     return ulRet;
 }
 
+int32_t ulRingBuffGetHeadIndex(xRing_buff_t *xRringBuf)
+{
+    int32_t ulRet = -1;
+
+    if ( xRringBuf != NULL ) {
+        ringGLOBAL_LOCK_FUN();
+        if ( xRringBuf->ulEffectiveSize > 0U ) {
+            ulRet = (int32_t)(xRringBuf->ulHeadIndex);
+        }
+        ringGLOBAL_UNLOCK_FUN();
+    }
+    return ulRet;
+}
+
+int32_t ulRingBuffGetTailIndex(xRing_buff_t *xRringBuf)
+{
+    int32_t ulRet = -1;
+
+    if ( xRringBuf != NULL ) {
+        ringGLOBAL_LOCK_FUN();
+        if ( xRringBuf->ulEffectiveSize > 0U ) {
+            ulRet = (int32_t)(xRringBuf->ulTailIndex);
+        }
+        ringGLOBAL_UNLOCK_FUN();
+    }
+    return ulRet;
+}
+
+uint8_t *pucRingBuffGetHeadPoint(xRing_buff_t *xRringBuf)
+{
+    uint8_t *pucRet = NULL;
+
+    if ( xRringBuf != NULL ) {
+        ringGLOBAL_LOCK_FUN();
+        if ( xRringBuf->ulEffectiveSize > 0U ) {
+            pucRet = (uint8_t *)&(xRringBuf->ucCache[xRringBuf->ulHeadIndex]);
+        }
+        ringGLOBAL_UNLOCK_FUN();
+    }
+
+    return pucRet;
+}
+
+uint8_t *pucRingBuffGetTailPoint(xRing_buff_t *xRringBuf)
+{
+    uint8_t *pucRet = NULL;
+
+    if ( xRringBuf != NULL ) {
+        ringGLOBAL_LOCK_FUN();
+        if ( xRringBuf->ulEffectiveSize > 0U ) {
+            pucRet = (uint8_t *)&(xRringBuf->ucCache[xRringBuf->ulTailIndex]);
+        }
+        ringGLOBAL_UNLOCK_FUN();
+    }
+
+    return pucRet;
+}
+
+void vRingBuffGetInfo(Ring_buff_info_t *xRringBufInfo, xRing_buff_t *xRringBuf)
+{
+    if ( ( xRringBufInfo != NULL ) && ( xRringBuf != NULL )) {
+
+        ringGLOBAL_LOCK_FUN();
+        xRringBufInfo->ulEffectiveSize = xRringBuf->ulEffectiveSize;
+        xRringBufInfo->ulRemainingSize = xRringBuf->ulRemainingSize;
+        xRringBufInfo->ulTotalSize = xRringBuf->ulEffectiveSize + xRringBuf->ulRemainingSize;
+        xRringBufInfo->ulHeadIndex = xRringBuf->ulHeadIndex;
+        xRringBufInfo->ulTailIndex = xRringBuf->ulTailIndex;
+        xRringBufInfo->pucHeadPoint = (uint8_t *)(xRringBuf->ucCache);
+        ringGLOBAL_UNLOCK_FUN();
+    }
+}
+
+
+
 
